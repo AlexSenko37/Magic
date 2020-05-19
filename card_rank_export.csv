@@ -1,0 +1,159 @@
+# cards,Card Name,Main or Sideboard,LinReg Coeff
+2,"Teferi, Time Raveler ",M,4.256104811
+3,"Uro, Titan of Nature's Wrath ",M,4.211320925
+2,Breeding Pool ,M,4.030238781
+2,"Jace, the Mind Sculptor ",M,3.776494502
+1,Breeding Pool ,M,3.598076521
+3,"Teferi, Time Raveler ",M,3.229780265
+2,"Uro, Titan of Nature's Wrath ",M,3.208446437
+1,Temple Garden ,M,3.096195862
+4,Path to Exile ,M,2.55244678
+2,Cryptic Command ,M,2.511295183
+1,Snow-Covered Forest ,M,2.441334722
+2,Supreme Verdict ,M,2.34975533
+2,Snapcaster Mage ,M,2.242864843
+3,Force of Negation ,M,2.23704593
+2,Archmage's Charm ,M,2.208751671
+5,Snow-Covered Island ,M,2.19707622
+3,"Jace, the Mind Sculptor ",M,1.946945338
+4,"Uro, Titan of Nature's Wrath ",M,1.620822124
+1,Snow-Covered Plains ,M,1.592213542
+2,"Teferi, Hero of Dominaria ",M,1.570850904
+4,Misty Rainforest ,M,1.538825132
+2,Mana Leak ,M,1.444665128
+1,Hallowed Fountain ,M,1.35874663
+2,Mystic Sanctuary ,M,1.066760455
+3,"Teferi, Hero of Dominaria ",M,0.958551373
+1,"Teferi, Time Raveler ",M,0.954786001
+4,Flooded Strand ,M,0.84367696
+2,Spell Queller ,M,0.55269339
+4,Arcum's Astrolabe ,M,0.455888865
+4,Ice-Fang Coatl ,M,0.455888865
+4,Field of Ruin ,M,0.449813793
+1,Snapcaster Mage ,M,0.331078287
+1,Detention Sphere ,M,0.292813751
+2,Snow-Covered Plains ,M,0.164276688
+1,Supreme Verdict ,M,0.099768936
+1,Polluted Delta ,M,0.065705308
+1,Mana Leak ,M,-0.088380687
+3,Arcum's Astrolabe ,M,-0.120494351
+3,Ice-Fang Coatl ,M,-0.120494351
+2,Deprive ,M,-0.12462967
+1,Remand ,M,-0.240206943
+4,Stoneforge Mystic ,M,-0.341130079
+3,Flooded Strand ,M,-0.36797388
+3,Hallowed Fountain ,M,-0.36797388
+3,Snapcaster Mage ,M,-0.368771449
+2,Brazen Borrower ,M,-0.380783765
+1,Vendilion Clique ,M,-0.421709543
+1,"Teferi, Hero of Dominaria ",M,-0.446623101
+1,Spell Queller ,M,-0.470063052
+1,Steam Vents ,M,-0.543830752
+1,Dovin's Veto ,M,-0.54535178
+4,Growth Spiral ,M,-0.546876097
+3,Mana Leak ,M,-0.553983955
+1,Glacial Fortress ,M,-0.594810699
+1,Spell Snare ,M,-0.7144517
+1,Mystic Sanctuary ,M,-0.718201161
+2,Force of Negation ,M,-0.728432421
+1,Monastery Mentor ,M,-0.741033782
+6,Snow-Covered Island ,M,-0.742972863
+1,Sword of Feast and Famine ,M,-0.774277258
+1,"Ashiok, Dream Render ",M,-0.77786417
+2,Shadow of Doubt ,M,-0.78103929
+3,Archmage's Charm ,M,-0.796329189
+3,Cryptic Command ,M,-0.861290747
+3,Stoneforge Mystic ,M,-0.918072066
+3,Mystic Sanctuary ,M,-0.945766554
+4,Thought Scour ,M,-0.945766554
+1,Brazen Borrower ,M,-0.998588902
+1,Archmage's Charm ,M,-1.010376559
+1,Timely Reinforcements ,M,-1.010376559
+1,Oust ,M,-1.031514049
+1,Winds of Abandon ,M,-1.031514049
+1,Engineered Explosives ,M,-1.052651539
+1,"Narset, Parter of Veils ",M,-1.052651539
+1,Misty Rainforest ,M,-1.140060962
+3,Polluted Delta ,M,-1.173326578
+2,Hallowed Fountain ,M,-1.183577819
+1,Batterskull ,M,-1.200089262
+4,Snow-Covered Island ,M,-1.223050554
+2,Opt ,M,-1.318026447
+3,Field of Ruin ,M,-1.398560293
+1,Ghost Quarter ,M,-1.474788367
+1,Prairie Stream ,M,-1.475103307
+2,Field of Ruin ,M,-1.481172272
+2,Field of the Dead ,M,-1.487543191
+3,Growth Spiral ,M,-1.634576711
+3,Thought Scour ,M,-1.794776255
+1,Island ,M,-1.919571185
+1,Life from the Loam ,M,-2.006800587
+3,Scalding Tarn ,M,-2.039259199
+1,Dismember ,M,-5.193148925
+2,Timely Reinforcements ,S,1.605642854
+2,Aether Gust ,S,1.246305525
+2,Celestial Purge ,S,1.161755565
+2,Veil of Summer ,S,1.058335791
+1,Disdainful Stroke ,S,1.053876555
+2,Mystical Dispute ,S,1.013793135
+2,Surgical Extraction ,S,0.971518155
+1,Dismember ,S,0.91841706
+1,Dovin's Veto ,S,0.800226675
+1,Disenchant ,S,0.71995429
+1,Monastery Mentor ,S,0.609989266
+1,Celestial Purge ,S,0.567714286
+2,Disdainful Stroke ,S,0.379668437
+1,Mystical Dispute ,S,0.377476877
+3,Aether Gust ,S,0.318447528
+1,Timely Reinforcements ,S,0.229514447
+1,Surgical Extraction ,S,0.123826997
+1,Aether Gust ,S,0.123826997
+2,Ceremonious Rejection ,S,0.104881068
+2,Soul-Guide Lantern ,S,0.104881068
+1,Engineered Explosives ,S,-0.024135432
+2,Rest in Peace ,S,-0.064218852
+2,"Thrun, the Last Troll ",S,-0.106493831
+1,Ceremonious Rejection ,S,-0.108685392
+2,Monastery Mentor ,S,-0.127631321
+2,Dovin's Veto ,S,-0.127631321
+1,Tireless Tracker ,S,-0.13813268
+3,Celestial Purge ,S,-0.188852231
+2,Damping Sphere ,S,-0.191043791
+3,Disdainful Stroke ,S,-0.209989721
+3,Soul-Guide Lantern ,S,-0.209989721
+3,Leyline of the Void ,S,-0.23112721
+2,Leyline of the Void ,S,-0.257506858
+1,Life Goes On ,S,-0.258096444
+1,"Narset, Parter of Veils ",S,-0.298922802
+1,"Thrun, the Last Troll ",S,-0.320060291
+1,Supreme Verdict ,S,-0.341197781
+2,Kor Firewalker ,S,-0.360143711
+2,Vendilion Clique ,S,-0.360143711
+2,Stony Silence ,S,-0.381281201
+1,"Teferi, Hero of Dominaria ",S,-0.407583781
+2,"Gideon, Ally of Zendikar ",S,-0.462780563
+1,Return to Nature ,S,-0.468022721
+1,Damping Sphere ,S,-0.468022721
+1,Knight of Autumn ,S,-0.473731848
+1,Winds of Abandon ,S,-0.489160211
+1,Soul-Guide Lantern ,S,-0.510297701
+1,"Gideon, Ally of Zendikar ",S,-0.531435191
+3,Ice-Fang Coatl ,S,-0.531435191
+1,Jace's Defeat ,S,-0.531435191
+1,Dispel ,S,-0.531435191
+1,Batterskull ,S,-0.531435191
+3,Timely Reinforcements ,S,-0.542744968
+4,Kor Firewalker ,S,-0.546876097
+2,Blood Moon ,S,-0.563252591
+2,Tireless Tracker ,S,-0.59837125
+1,Spell Queller ,S,-0.617214917
+3,Veil of Summer ,S,-0.693884313
+2,Return to Nature ,S,-0.72764878
+2,Wheel of Sun and Moon ,S,-0.777128196
+1,Rest in Peace ,S,-0.816009608
+1,Pithing Needle ,S,-0.84071468
+1,Wheel of Sun and Moon ,S,-1.01123761
+1,Force of Negation ,S,-1.161408525
+2,"Ashiok, Dream Render ",S,-1.541124716
+1,"Ashiok, Dream Render ",S,-2.346540894
+3,"Ashiok, Dream Render ",S,-2.955144981

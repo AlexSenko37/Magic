@@ -1,0 +1,162 @@
+Name,Wins,Losses,Win Rate,# Pilots
+Ad Nauseam,135,26,0.838509317,20
+Amulet Titan,381,103,0.787190083,39
+BR,38,7,0.844444444,8
+Bant Snowblade,782,223,0.778109453,82
+Black-Red Uneath,79,14,0.849462366,11
+Blue-Red Control,92,19,0.828828829,10
+Bogles,91,17,0.842592593,14
+Burn,568,169,0.770691995,68
+Devoted Devastation,57,6,0.904761905,9
+Dredge,500,138,0.78369906,57
+Eldrazi Tron,451,136,0.768313458,52
+G,37,8,0.822222222,7
+Electrobalance,44,8,0.846153846,7
+Gifts Storm,128,21,0.859060403,15
+Goblins,58,4,0.935483871,8
+Grixis Sprite Delver,43,10,0.811320755,7
+Heliod Devoted Company,105,18,0.853658537,15
+Humans,481,130,0.787234043,68
+Infect,227,74,0.754152824,32
+Jeskai Control,47,6,0.886792453,5
+Lurrus Jund,84,24,0.777777778,13
+Jund Death's Shadow,70,19,0.786516854,13
+Mono-Red Blitz,310,95,0.765432099,54
+Naya Zoo-Whack,123,23,0.842465753,19
+Neobrand,150,36,0.806451613,15
+Niv to Light,192,53,0.783673469,22
+Ponza,21,4,0.84,1
+WR,152,33,0.821621622,27
+Red-Green Aggro,16,2,0.888888889,2
+Red-Green Midrange,543,166,0.765867419,63
+The Rock,45,11,0.803571429,8
+Titan Field,149,40,0.788359788,23
+UB,43,10,0.811320755,7
+UBR,37,8,0.822222222,6
+UBRG,62,11,0.849315068,10
+UR,69,6,0.92,14
+URG,78,7,0.917647059,13
+Tron,420,134,0.758122744,75
+W,20,0,1,4
+WB,13,2,0.866666667,3
+WBG,27,3,0.9,6
+WG,73,2,0.973333333,12
+WUBG,5,0,1,1
+WUBR,10,0,1,2
+WUBRG,111,16,0.874015748,19
+WUG,20,4,0.833333333,4
+WUR,32,6,0.842105263,4
+WURG,33,5,0.868421053,7
+Yorion Chord Soulherder,21,3,0.875,3
+Bant Devoted Vizier Heliod,11,4,0.733333333,1
+BG,31,7,0.815789474,5
+Simic Reclamation,114,18,0.863636364,17
+Living End,20,4,0.833333333,4
+Inverter's Grace,15,5,0.75,3
+Lurrus Hardened Scales Affinity,14,3,0.823529412,3
+R,23,2,0.92,5
+RG,30,3,0.909090909,6
+Artifact Breach,54,13,0.805970149,11
+Mardu Shadow,89,12,0.881188119,11
+Lurrus Death's Shadow,31,4,0.885714286,4
+Grixis Whirza,139,24,0.852760736,14
+U,25,0,1,4
+Jund,407,126,0.763602251,67
+Temur Scapeshift,37,2,0.948717949,4
+Golgari Yawgmoth,43,6,0.87755102,7
+Eldrazi & Taxes,75,11,0.872093023,8
+Sultai Mill,44,9,0.830188679,3
+Goryo Through the Breach,22,3,0.88,1
+Four-Color Death's Shadow,76,14,0.844444444,14
+Titanshift,114,24,0.826086957,23
+Five-Colors Elementals,45,10,0.818181818,5
+Uroza,540,142,0.791788856,58
+Merfolk,36,4,0.9,5
+Boros Ponza,18,2,0.9,3
+Eldrazi and Taxes,97,16,0.85840708,15
+B,5,0,1,1
+Prowess Burn,22,4,0.846153846,3
+Dimir Whirza,80,16,0.833333333,11
+UBG,26,4,0.866666667,6
+Naya Aggro,64,23,0.735632184,9
+Grixis Death's Shadow,71,13,0.845238095,14
+Mono-Blue Tron,59,6,0.907692308,6
+Bant Soulherder,25,5,0.833333333,4
+Rainbow Zoo,11,1,0.916666667,2
+Temur Snow,33,4,0.891891892,6
+WBRG,5,0,1,1
+WRG,45,0,1,8
+Slivers,43,13,0.767857143,2
+Naya Zoo,26,4,0.866666667,2
+Blue-White Whirza Control,33,6,0.846153846,4
+W/U Spirits,44,4,0.916666667,6
+Jeskai Ascendancy,23,5,0.821428571,1
+Mono-Red Prowess,31,10,0.756097561,5
+Bant Tempo,34,9,0.790697674,4
+Gruul Midrange,19,5,0.791666667,4
+Mardu Pyromancer,39,6,0.866666667,6
+Blue-White Control,59,10,0.855072464,12
+Jeskai Copycat,32,8,0.8,3
+Snow Control,34,5,0.871794872,4
+Blue-Black Mill,16,1,0.941176471,3
+Death&amp;Taxes,40,7,0.85106383,3
+Creative Mining,14,1,0.933333333,3
+Esper Control,22,7,0.75862069,2
+WU,5,0,1,1
+Red-Green Eldrazi Aggro,39,9,0.8125,4
+Four-Colors Snow Control,52,14,0.787878788,7
+Temur Snow Midrange,20,3,0.869565217,2
+Temur Through the Breach,28,6,0.823529412,2
+UG,12,3,0.8,3
+Green-White Death and Taxes,23,2,0.92,4
+Black-White Smallpox,16,4,0.8,3
+Black-White Blade,11,3,0.785714286,1
+Bant Blade,39,5,0.886363636,7
+CrabVine,30,5,0.857142857,6
+Black-Red Unearth,13,2,0.866666667,3
+Dice Factory,7,3,0.7,2
+Elves,3,2,0.6,1
+Red-Green Ponza Aggro,22,6,0.785714286,2
+Izzet Phoenix,8,2,0.8,2
+Gruul Monsters,36,2,0.947368421,6
+Niv Copycat,13,2,0.866666667,1
+BRG,13,2,0.866666667,3
+Bant Titan Field,17,3,0.85,4
+Five Colors Superfriends,30,4,0.882352941,5
+Hollow Herald,15,0,1,3
+Unearth Crabvine,10,0,1,1
+Black-White Tokens,8,2,0.8,1
+Naya Zoo Burn,16,6,0.727272727,2
+Bring to Light Scapeshift,23,4,0.851851852,3
+Grinding Breach,28,4,0.875,5
+Blakc-White Smallpox,15,0,1,2
+Mardu Pyro-Tempo,5,0,1,1
+Mono-Red Prison,15,0,1,2
+Temur Lands,14,1,0.933333333,2
+Temur Turns,13,0,1,2
+WBR,13,2,0.866666667,3
+Abzan,10,0,1,2
+Esper Stoneblade,14,4,0.777777778,2
+Eldritch Kiki Chord,15,3,0.833333333,1
+Abzan Company,9,1,0.9,2
+Abzan Human Aristo-combo,10,0,1,1
+Company,10,0,1,1
+Field Shift,10,0,1,2
+Jund Goblins Combo,10,0,1,1
+Jund Unearth,5,0,1,1
+Sultai Traverse,8,2,0.8,1
+White(-Red) Death and Taxes,5,0,1,1
+10-Rack,8,2,0.8,2
+Izzet Breach,6,4,0.6,2
+Sultai Snow Control,8,2,0.8,2
+Bant Spirits,5,0,1,1
+Blue-Black Control,5,0,1,1
+Gruul Eldrazi,10,0,1,2
+Jund Smallpox,5,0,1,1
+WUB,5,0,1,1
+Blue-White Tempo,8,2,0.8,2
+Mardu 8-Ball,11,4,0.733333333,2
+White Force Weenie,6,4,0.6,2
+Hollow Breach,5,0,1,1
+Temur Snow Land Control,5,0,1,1
+Temur Reclamation,5,0,1,1
