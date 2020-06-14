@@ -13077,240 +13077,17 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The goal of this notebook is to use clustering to identify types of decks played in Modern Magic: The Gathering, and use umap to show the clusters, and identify rank the clusters by win rate.</p>
-<p>Steps:
--- build list of all card names in database 
--- create vectors where each entry is a number that represents how many of a given card are in each deck, and the vector maps to a list of card names
--- cluster</p>
+<h1 id="Magic:-The-Gathering-Metagame-Analysis">Magic: The Gathering Metagame Analysis<a class="anchor-link" href="#Magic:-The-Gathering-Metagame-Analysis">&#182;</a></h1><p>Magic: The Gathering is a board game with 20 million+ players worldwide in which players battle each other using decks of 60+ cards constructed from a pool of thousands of unique cards.</p>
+<p>The decks used competitively in tournaments tend to revolve around dozens of deck archetypes. This notebooks studies clusters of similar decks to determine the true number of meaningful archetypes.</p>
+<p>In this notebook:</p>
+<ul>
+<li>Representing decks with vectors indicating their compostiion</li>
+<li>Dimensionality reduction with UMAP so similar decks are clustered in a 2D space</li>
+<li>Interactive plotting of the UMAP embeddings using Bokeh</li>
+</ul>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">ast</span><span class="o">,</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">sklearn.cluster</span> <span class="kn">import</span> <span class="n">KMeans</span>
-
-<span class="kn">import</span> <span class="nn">umap</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">figure</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">output_notebook</span>
-<span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">HoverTool</span><span class="p">,</span> <span class="n">ColumnDataSource</span><span class="p">,</span> <span class="n">CategoricalColorMapper</span><span class="p">,</span> <span class="n">OpenURL</span><span class="p">,</span> <span class="n">TapTool</span>
-<span class="kn">from</span> <span class="nn">bokeh.palettes</span> <span class="kn">import</span> <span class="n">Turbo256</span>
-
-
-<span class="c1"># import data from json database</span>
-<span class="k">def</span> <span class="nf">read_json</span><span class="p">():</span>
-    
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;mtg_all.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-
-    <span class="n">deck_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-        <span class="n">deck_dict</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
-        <span class="n">deck_list</span> <span class="o">+=</span> <span class="p">[</span><span class="n">deck_dict</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">deck_list</span>
-
-<span class="c1">#deck_list = read_json()</span>
-
-
-<span class="c1"># get set of card names and deck names</span>
-<span class="k">def</span> <span class="nf">card_set</span><span class="p">(</span><span class="n">deck_list</span><span class="p">):</span>
-    <span class="n">all_card_names</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">all_archetypes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">deck</span> <span class="ow">in</span> <span class="n">deck_list</span><span class="p">:</span>
-        <span class="n">card_names</span> <span class="o">=</span> <span class="n">deck</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">]</span> 
-        <span class="n">all_card_names</span> <span class="o">+=</span> <span class="n">card_names</span>
-        
-        <span class="n">archetype</span> <span class="o">=</span> <span class="n">deck</span><span class="p">[</span><span class="s1">&#39;archetype&#39;</span><span class="p">]</span>
-        <span class="n">all_archetypes</span> <span class="o">+=</span> <span class="p">[</span><span class="n">archetype</span><span class="p">]</span>
-    <span class="n">card_set</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_card_names</span><span class="p">))</span>
-    <span class="n">archetype_set</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">all_archetypes</span><span class="p">))</span>
-    <span class="n">card_set</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="n">archetype_set</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">card_set</span><span class="p">,</span> <span class="n">archetype_set</span>
-        
-<span class="c1">#card_name_list, archetype_name_list = card_set(deck_list)</span>
-
-
-<span class="c1"># make ordered dictionary of all card names</span>
-<span class="k">def</span> <span class="nf">card_name_dict</span><span class="p">(</span><span class="n">deck_list</span><span class="p">):</span>
-    <span class="n">all_card_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">all_archetypes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">deck</span> <span class="ow">in</span> <span class="n">deck_list</span><span class="p">:</span>
-        <span class="n">all_archetypes</span><span class="p">[</span><span class="n">deck</span><span class="p">[</span><span class="s1">&#39;archetype&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">card_names</span> <span class="o">=</span> <span class="n">deck</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">card_names</span><span class="p">:</span>
-            <span class="n">all_card_names</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">all_card_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">all_card_names</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
-    <span class="k">return</span> <span class="n">all_card_names</span><span class="p">,</span> <span class="n">all_archetypes</span>
-        
-<span class="n">card_name_list</span><span class="p">,</span> <span class="n">archetype_name_list</span> <span class="o">=</span> <span class="n">card_name_dict</span><span class="p">(</span><span class="n">deck_list</span><span class="p">)</span>
-
-
-<span class="c1"># build vector representation for each deck</span>
-<span class="k">def</span> <span class="nf">deck_vect</span><span class="p">(</span><span class="n">deck_list</span><span class="p">,</span> <span class="n">card_name_list</span><span class="p">):</span>
-    
-    <span class="c1"># for each deck</span>
-    <span class="k">for</span> <span class="n">deck</span> <span class="ow">in</span> <span class="n">deck_list</span><span class="p">:</span>
-        <span class="c1"># create a new instance of card_name_list</span>
-        <span class="n">deck_card_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">card_name_list</span><span class="p">)</span>
-        
-        <span class="c1"># get lists of cards names and nums</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="n">deck</span><span class="p">[</span><span class="s1">&#39;names&#39;</span><span class="p">]</span>
-        <span class="n">nums</span> <span class="o">=</span> <span class="n">deck</span><span class="p">[</span><span class="s1">&#39;nums&#39;</span><span class="p">]</span>
-        
-        <span class="c1"># assign values to card name dict</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
-            <span class="n">deck_card_names</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        
-        <span class="c1"># convert to a vector of card numbers</span>
-        <span class="c1"># store as a new part of the deck dict</span>
-        <span class="n">deck</span><span class="p">[</span><span class="s1">&#39;card_vector&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">deck_card_names</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    
-    <span class="k">return</span> <span class="n">deck_list</span><span class="p">,</span> <span class="n">deck_card_names</span>
-
-<span class="c1">#deck_list2, temp = deck_vect(deck_list, card_name_list)</span>
-
-
-<span class="c1"># compile vector representations into one numpy array</span>
-<span class="k">def</span> <span class="nf">all_deck_vectors</span><span class="p">(</span><span class="n">deck_list</span><span class="p">):</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">deck</span> <span class="ow">in</span> <span class="n">deck_list</span><span class="p">:</span>
-        <span class="n">M</span> <span class="o">+=</span> <span class="p">[</span><span class="n">deck</span><span class="p">[</span><span class="s1">&#39;card_vector&#39;</span><span class="p">]]</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
-
-<span class="c1">#X = all_deck_vectors(deck_list2)</span>
-
-
-<span class="c1"># cluster using sklearn</span>
-<span class="c1">#kmeans = KMeans(n_clusters=100, random_state=0).fit(X)</span>
-
-<span class="k">def</span> <span class="nf">run_umap</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
-
-    <span class="n">reducer</span> <span class="o">=</span> <span class="n">umap</span><span class="o">.</span><span class="n">UMAP</span><span class="p">()</span>
-    <span class="n">embedding</span> <span class="o">=</span> <span class="n">reducer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-        <span class="n">embedding</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="n">embedding</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-        <span class="n">s</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="c1">#c=[sns.color_palette()])</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;UMAP projection of the Magic dataset&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;mtg_clusters.png&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">300</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">embedding</span>
-
-<span class="c1">#embedding = run_umap(X)</span>
-
-
-<span class="k">def</span> <span class="nf">label_decks</span><span class="p">(</span><span class="n">deck_list</span><span class="p">,</span> <span class="n">archetype_name_list</span><span class="p">):</span>
-    <span class="c1"># plots umap with hover-triggered labels</span>
-    
-    <span class="c1"># generate list of archetypes labels for each deck</span>
-    <span class="n">deck_labels</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">deck_urls</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">deck</span> <span class="ow">in</span> <span class="n">deck_list</span><span class="p">:</span>
-        <span class="n">deck_labels</span> <span class="o">+=</span> <span class="p">[</span><span class="n">deck</span><span class="p">[</span><span class="s1">&#39;archetype&#39;</span><span class="p">]]</span>
-        <span class="n">deck_urls</span> <span class="o">+=</span> <span class="p">[</span><span class="n">deck</span><span class="p">[</span><span class="s1">&#39;deck_url&#39;</span><span class="p">]]</span>
-        
-    <span class="n">deck_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">embedding</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">))</span>
-    <span class="n">deck_df</span><span class="p">[</span><span class="s1">&#39;archetype&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deck_labels</span>
-    <span class="n">deck_df</span><span class="p">[</span><span class="s1">&#39;deck_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deck_urls</span>
-    
-    <span class="c1"># make index of unique labels for color mapping</span>
-    <span class="n">arch_dict</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">archetype_name_list</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
-        <span class="n">arch_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-    <span class="k">return</span> <span class="n">deck_df</span><span class="p">,</span> <span class="n">arch_dict</span>
-
-<span class="c1">#deck_df, arch_dict = label_decks(deck_list, archetype_name_list)</span>
-    
-    
-<span class="kn">from</span> <span class="nn">bokeh.plotting</span> <span class="kn">import</span> <span class="n">figure</span><span class="p">,</span> <span class="n">show</span><span class="p">,</span> <span class="n">output_notebook</span>
-<span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">HoverTool</span><span class="p">,</span> <span class="n">ColumnDataSource</span><span class="p">,</span> <span class="n">CategoricalColorMapper</span>
-<span class="kn">from</span> <span class="nn">bokeh.palettes</span> <span class="kn">import</span> <span class="n">Turbo256</span>
-
-<span class="kn">from</span> <span class="nn">bokeh.models</span> <span class="kn">import</span> <span class="n">OpenURL</span><span class="p">,</span> <span class="n">TapTool</span>
-<span class="c1">#from bokeh.plotting import output_file</span>
-
-
-<span class="k">def</span> <span class="nf">interactive_umap</span><span class="p">(</span><span class="n">deck_df</span><span class="p">,</span> <span class="n">arch_dict</span><span class="p">):</span>
-    <span class="n">datasource</span> <span class="o">=</span> <span class="n">ColumnDataSource</span><span class="p">(</span><span class="n">deck_df</span><span class="p">)</span>
-
-    <span class="n">color_mapping</span> <span class="o">=</span> <span class="n">CategoricalColorMapper</span><span class="p">(</span><span class="n">factors</span><span class="o">=</span><span class="n">deck_df</span><span class="p">[</span><span class="s1">&#39;archetype&#39;</span><span class="p">],</span> <span class="n">palette</span><span class="o">=</span><span class="n">Turbo256</span><span class="p">)</span>
-    
-    <span class="n">plot_figure</span> <span class="o">=</span> <span class="n">figure</span><span class="p">(</span>
-        <span class="n">title</span><span class="o">=</span><span class="s1">&#39;UMAP projection of the Magic dataset&#39;</span><span class="p">,</span>
-        <span class="n">plot_width</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-        <span class="n">plot_height</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
-        <span class="n">tools</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;pan, wheel_zoom, reset&#39;</span><span class="p">,</span><span class="s1">&#39;tap&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
-    
-    <span class="n">plot_figure</span><span class="o">.</span><span class="n">add_tools</span><span class="p">(</span><span class="n">HoverTool</span><span class="p">(</span><span class="n">tooltips</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">(</span><span class="s2">&quot;archeytpe&quot;</span><span class="p">,</span> <span class="s2">&quot;@archetype&quot;</span><span class="p">),</span>
-    <span class="p">]))</span>
-    
-    <span class="n">plot_figure</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span>
-        <span class="s1">&#39;x&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;y&#39;</span><span class="p">,</span>
-        <span class="n">source</span><span class="o">=</span><span class="n">datasource</span><span class="p">,</span>
-        <span class="n">color</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="s1">&#39;archetype&#39;</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">color_mapping</span><span class="p">),</span>
-        <span class="n">line_alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
-        <span class="n">fill_alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
-        <span class="n">size</span><span class="o">=</span><span class="mi">4</span>
-    <span class="p">)</span>
-    
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.mtggoldfish.com/@deck_url/&quot;</span>
-    <span class="n">taptool</span> <span class="o">=</span> <span class="n">plot_figure</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">TapTool</span><span class="p">)</span>
-    <span class="n">taptool</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">OpenURL</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span>
-    
-    <span class="n">show</span><span class="p">(</span><span class="n">plot_figure</span><span class="p">)</span>
-    
-    <span class="k">return</span>
-
-<span class="c1">#interactive_umap(deck_df, arch_dict)</span>
-    
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-cd246c89eaca&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">     61</span>     <span class="ansi-green-fg">return</span> all_card_names<span class="ansi-blue-fg">,</span> all_archetypes
-<span class="ansi-green-intense-fg ansi-bold">     62</span> 
-<span class="ansi-green-fg">---&gt; 63</span><span class="ansi-red-fg"> </span>card_name_list<span class="ansi-blue-fg">,</span> archetype_name_list <span class="ansi-blue-fg">=</span> card_name_dict<span class="ansi-blue-fg">(</span>deck_list<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     64</span> 
-<span class="ansi-green-intense-fg ansi-bold">     65</span> 
-
-<span class="ansi-red-fg">NameError</span>: name &#39;deck_list&#39; is not defined</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
@@ -13712,10 +13489,10 @@ div#notebook {
 
 
 
-<div id="0f31fa5e-f301-4a0e-adb9-86db9b1ee21a"></div>
+<div id="09c6cb05-2102-4a79-bc2d-60579ed85151"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#0f31fa5e-f301-4a0e-adb9-86db9b1ee21a');
+var element = $('#09c6cb05-2102-4a79-bc2d-60579ed85151');
 
 (function(root) {
   function now() {
@@ -14044,10 +13821,10 @@ var element = $('#0f31fa5e-f301-4a0e-adb9-86db9b1ee21a');
 
 
 
-<div id="20371573-c7fb-488b-9254-a863ffe60d15"></div>
+<div id="bf963600-7272-4ac9-9c91-1ff26c868d21"></div>
 <div class="output_subarea output_javascript ">
 <script type="text/javascript">
-var element = $('#20371573-c7fb-488b-9254-a863ffe60d15');
+var element = $('#bf963600-7272-4ac9-9c91-1ff26c868d21');
 (function(root) {
   function embed_document(root) {
     
@@ -14079,45 +13856,6 @@ var element = $('#20371573-c7fb-488b-9254-a863ffe60d15');
 
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
 
